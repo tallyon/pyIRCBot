@@ -25,7 +25,7 @@ raffle = Raffle.Raffle(pointsMan)
 server = sys.argv[1]
 channel = sys.argv[2]
 botnick = sys.argv[3]
-password = ""	
+password = ""
 if(len(sys.argv) > 4):
 	password = sys.argv[4]
 
