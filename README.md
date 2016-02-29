@@ -1,4 +1,5 @@
 # pyIRCBot
+[Early development]<br/>
 IRC bot written in python that creates a layer of interaction and persistence between users, like raffles and uses redis database
 
 ## Prerequisites
