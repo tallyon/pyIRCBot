@@ -67,6 +67,7 @@ while 1:
 	splitText = text.split(':')
 	index = 0
 	for t in splitText:
+		# Print all PRIVMSG messages in format <user>: <message>
 		if t.find("PRIVMSG") != -1:
 			userName = t[0:t.find(" ")]
 			message = splitText[index + 1]
@@ -116,8 +117,6 @@ while 1:
 		pingEnd = text.find(' ', text.find("PING"))
 		pingMessage = text[text.find("PING"):].split(':')[0]
 		print "  " + pingMessage
-		#for t in text.split():
-			#print " " + t
 		sendStr = "PONG " + text.split() [0] + "\r\n"
 		irc.send(sendStr)
 		print " Sending: " + sendStr + "\n"
