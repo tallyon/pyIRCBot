@@ -1,6 +1,8 @@
 import random
-# Raffle - for 5 seconds chat users can write !join in chat to join open raffle.
-# Every user is stored in the list and at the end one user is selected at random.
+# Raffle - after authorized user sends !raffle in irc all users can send !join <points> to join the raffle
+# with <points> points that are immediately subtracted from their points pool. When authorized user sends !raffle
+# again the winner receives all the points accumulated in the raffle and the raffle stops.
+# Every user is stored in the redis database, new users are inserted into database and given starting points (20)
 class Raffle:
 	"""Handles raffles in chat. !join to participate. Stores usernames in local file"""
 	def __init__(self, pointsManager):
