@@ -3,7 +3,7 @@ class PointsManager:
 		self.redis = r
 		if self.redis.get("tallyon") is None:
 			self.redis.set("tallyon", 100)
-		print "Tallyon has" + self.redis.get("tallyon") + "points"
+			print "tallyon has" + self.redis.get("tallyon") + "points"
 	
 	def AddPoints(self, user, points):
 		# If user was not found in dictionary, add him and give him 20 points

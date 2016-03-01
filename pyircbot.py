@@ -11,7 +11,10 @@ if len(sys.argv) > 1 and (sys.argv[1] == "-h" or sys.argv[1] == "--help"):
 			\n\tpyircbot.py [COMMAND] [FILE] [SERVER] [CHANNEL] [BOT NICK] [PASSWORD] \
 			\n\n\tCOMMAND: \
 			\n\t\t-h, --help\t\tHelp you are seeing right now \
-			\n\t\t-t, --testconfig\tTests [FILE] for being valid config file.\n\t\t\t\t\tIf no [FILE] specified use default (pyircbot.config)\n"
+			\n\t\t-t, --testconfig\tTests [FILE] for being valid config file.\n\t\t\t\t\tIf no [FILE] specified use default (pyircbot.config) \
+			\n\n\tExample of usage: \
+			\n\n\tpython pyircbot.py irc.freenode.com \"#python\" ircbot secretpass \
+			\n\tConnects to irc.freenode.com, join channel \"#python\" as ircbot and identify with password secretpass"
 	sys.exit()
 
 # Runtime argument -t or --testconfig runs config file check
@@ -94,7 +97,7 @@ while 1:
 			print userName + ": " + message
 
 			# check for !raffle
-			if userName.find("tallyon") == 0:
+			if userName.find("tallyon!") == 0:
 				if message.find("!raffle") == 0:
 					irc.send("PRIVMSG " + channel + " :tallyon started the raffle\n")
 					# if raffle is inactive start it
