@@ -63,3 +63,6 @@ target/
 
 # redis database
 *.rdb
+
+# Config file
+pyircbot.config
