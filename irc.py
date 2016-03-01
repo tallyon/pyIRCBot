@@ -1,26 +1,45 @@
 import socket
 import sys
 import time
-import redis
+import BotController
 import Raffle
 import PointsManager
 
+# Help for CLI
+if (sys.argv[1] == "-h" or sys.argv[1] == "--help"):
+	print "Usage: \
+			\n\tpyircbot.py [COMMAND] [FILE] [SERVER] [CHANNEL] [BOT NICK] [PASSWORD] \
+			\n\n\tCOMMAND: \
+			\n\t\t-h, --help\t\tHelp you are seeing right now \
+			\n\t\t-t, --testconfig\tTests [FILE] for being valid config file.\n\t\t\t\t\tIf no [FILE] specified use default (pyircbot.config)\n"
+	sys.exit()
+
+# Runtime argument -t or --testconfig runs config file check
+if sys.argv[1] == "-t" or sys.argv[1] == "--testconfig":
+	# Second argument after -t or --testconfig should be config file path
+	# if there's no second argument assume default config file
+	if len(sys.argv) >= 2:
+		Bot = BotController.BotController()
+	else:
+		Bot = BotController.BotController(sys.argv[2])
+
+	# Print config generated from config file
+	print Bot.TestConfigurationFile()
+	sys.exit()
+
+# There should be at least 4 arguments to run the bot properly or exactly 1 argument to load
+if len(sys.argv) < 4:
+	print "Invalid usage! Run script with flag -h or --help to see usage information."
+	sys.exit()
+
+# Create Bot controller object
+Bot = BotController.BotController()
+
 # Connect to redis server
-redisHost = "localhost"
-redisPort = 6379
-redisDB = 0
-r = redis.StrictRedis(host=redisHost, port=redisPort, db=redisDB)
-if(r.set("foo", "bar") == True):
-	print "bar == " + r.get("foo")
-	print "Successfuly connected to redis database"
-	r.delete("foo")
-else:
-	print "Cannot connect to redis database at " + redisHost + ":" + redisPort + " db " + redisDB
+print "Connecting to Redis server: {}".format(Bot.ConnectToRedis())
 
-pointsMan = PointsManager.PointsManager(r)
+pointsMan = PointsManager.PointsManager(Bot.GetRedisInstance())
 raffle = Raffle.Raffle(pointsMan)
-
-# Connect to IRC server
 
 server = sys.argv[1]
 channel = sys.argv[2]
