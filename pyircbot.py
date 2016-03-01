@@ -13,8 +13,8 @@ if len(sys.argv) > 1 and (sys.argv[1] == "-h" or sys.argv[1] == "--help"):
 			\n\t\t-h, --help\t\tHelp you are seeing right now \
 			\n\t\t-t, --testconfig\tTests [FILE] for being valid config file.\n\t\t\t\t\tIf no [FILE] specified use default (pyircbot.config) \
 			\n\n\tExample of usage: \
-			\n\n\tpython pyircbot.py irc.freenode.com \"#python\" ircbot secretpass \
-			\n\tConnects to irc.freenode.com, join channel \"#python\" as ircbot and identify with password secretpass"
+			\n\n\tpython pyircbot.py irc.freenode.com:6667 \"#python\" ircbot secretpass \
+			\n\tConnects to irc.freenode.com at port 6667, join channel \"#python\" as ircbot and identify with password secretpass"
 	sys.exit()
 
 # Runtime argument -t or --testconfig runs config file check
@@ -30,8 +30,8 @@ if len(sys.argv) > 1 and (sys.argv[1] == "-t" or sys.argv[1] == "--testconfig"):
 	print Bot.TestConfigurationFile()
 	sys.exit()
 
-# There should be at least 4 arguments to run the bot properly or exactly 1 argument to load
-if len(sys.argv) < 4:
+# There should be at least 4 and no more than 5 arguments to run the bot properly
+if len(sys.argv) < 4 and len(sys.argv) > 5:
 	print "Invalid usage! Run script with flag -h or --help to see usage information."
 	sys.exit()
 
@@ -44,7 +44,14 @@ print "Connecting to Redis server: {}".format(Bot.ConnectToRedis())
 pointsMan = PointsManager.PointsManager(Bot.GetRedisInstance())
 raffle = Raffle.Raffle(pointsMan)
 
-server = sys.argv[1]
+# If port was provided with host address extract it and use in connection
+if len(sys.argv[1].split(':')) == 2:
+	server = sys.argv[1].split(':')[0]
+	port = int(sys.argv[1].split(':')[1])
+else:
+	server = sys.argv[1]
+	port = 6667
+
 channel = sys.argv[2]
 botnick = sys.argv[3]
 password = ""
@@ -56,7 +63,7 @@ irc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 print "\tAttempting to connect to:" + server + "\n"
 # connect to the server
-irc.connect((server, 6667))
+irc.connect((server, port))
 print "\tSuccessfuly connected to: " + server + "\n"
 # pass
 sendStr = "PASS \n"
