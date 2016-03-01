@@ -6,7 +6,7 @@ import Raffle
 import PointsManager
 
 # Help for CLI
-if (sys.argv[1] == "-h" or sys.argv[1] == "--help"):
+if len(sys.argv) > 1 and (sys.argv[1] == "-h" or sys.argv[1] == "--help"):
 	print "Usage: \
 			\n\tpyircbot.py [COMMAND] [FILE] [SERVER] [CHANNEL] [BOT NICK] [PASSWORD] \
 			\n\n\tCOMMAND: \
@@ -15,13 +15,13 @@ if (sys.argv[1] == "-h" or sys.argv[1] == "--help"):
 	sys.exit()
 
 # Runtime argument -t or --testconfig runs config file check
-if sys.argv[1] == "-t" or sys.argv[1] == "--testconfig":
+if len(sys.argv) > 1 and (sys.argv[1] == "-t" or sys.argv[1] == "--testconfig"):
 	# Second argument after -t or --testconfig should be config file path
-	# if there's no second argument assume default config file
-	if len(sys.argv) >= 2:
-		Bot = BotController.BotController()
-	else:
+	# if there's second argument parse it as config file, if not use default config file
+	if len(sys.argv) == 3:
 		Bot = BotController.BotController(sys.argv[2])
+	else:
+		Bot = BotController.BotController()
 
 	# Print config generated from config file
 	print Bot.TestConfigurationFile()
